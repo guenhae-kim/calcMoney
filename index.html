@@ -200,8 +200,10 @@
         jeonseCosts.push(Math.round(data.interest1));
         banjeonseCosts.push(Math.round(data.interest2));
       }
-       
 
+      const diff = Math.abs(baseData.interest1 - baseData.interest2);
+      const cheaper = baseData.interest1 < baseData.interest2 ? '전세' : '반전세';
+      const moreExpensive = cheaper === '전세' ? '반전세' : '전세';
       document.getElementById("result").innerHTML = `
         <h3>옵션1. 전세 ${(option1Jeonse / 1e8).toFixed(1)}억</h3>
         <table>
@@ -224,14 +226,14 @@
           <tr><td>월 비용</td><td>${formatMoney(baseData.interest2 / 12)}</td><td>총 비용 ÷ 12</td></tr>
         </table>
 
-        <h3>옵션3. 비교</h3>
+        <h3>비교</h3>
         <table>
           <tr><th>구분</th><th>총 융자액</th><th>연 비용</th><th>월 비용</th></tr>
           <tr><td>전세</td><td>${formatEok(option1Jeonse - totalMoney)}</td><td>${formatMoney(baseData.interest1)}</td><td>${formatMoney(baseData.interest1 / 12)}</td></tr>
           <tr><td>반전세</td><td>${formatEok(option2Deposit - totalMoney)}</td><td>${formatMoney(baseData.interest2)}</td><td>${formatMoney(baseData.interest2 / 12)}</td></tr>
         </table>
 
-        <p class='highlight'>👉 ${baseData.interest1 < baseData.interest2 ? '전세가 더 유리함' : '반전세가 더 유리함'}</p>`;
+        <p class='highlight'>👉 ${cheaper}가 더 유리함 (${formatMoney(diff/12)} 차이남)</p>`;
 
       if (chartInstance){
         chartInstance.destroy();
