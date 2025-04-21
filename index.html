@@ -233,7 +233,7 @@
           <tr><td>반전세</td><td>${formatEok(option2Deposit - totalMoney)}</td><td>${formatMoney(baseData.interest2)}</td><td>${formatMoney(baseData.interest2 / 12)}</td></tr>
         </table>
 
-        <p class='highlight'>👉 ${cheaper}가 더 유리함 (${formatMoney(diff/12)} 차이남)</p>`;
+        <p class='highlight'>👉 ${cheaper}가 더 유리함 (한달에 ${formatMoney(diff/12)} 차이남)</p>`;
 
       if (chartInstance){
         chartInstance.destroy();
