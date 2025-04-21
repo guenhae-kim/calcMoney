@@ -63,7 +63,7 @@
     th, td {
       border: 1px solid #e0e0e0;
       padding: 10px;
-      text-align: left;
+      text-align: center;
     }
     th {
       background: #f7f7f7;
@@ -71,7 +71,9 @@
     canvas {
       margin-top: 24px;
       width: 100% !important;
+      max-width: 1400px;
       height: 1000px;
+      max-height: 800px;
       display: block;
     }
     p, ul {
@@ -123,7 +125,7 @@
   </div>
 
   <div class="result" id="result"></div>
-  <canvas id="rateChart" width="800" height="800"></canvas>
+  <canvas id="rateChart" width="800" height="800" />
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -204,7 +206,49 @@
       const diff = Math.abs(baseData.interest1 - baseData.interest2);
       const cheaper = baseData.interest1 < baseData.interest2 ? '전세' : '반전세';
       const moreExpensive = cheaper === '전세' ? '반전세' : '전세';
-      document.getElementById("result").innerHTML = `
+
+
+        // …옵션1 테이블 생성 코드 끝난 직후에 삽입👇
+// 전세 금액별 연·월 비용 표 (±2억, 0.2억 단위)
+const jeonseBase = parseFloat(document.getElementById("option1Jeonse").value);
+const step = 0.2; // 0.2억씩
+const rangeEok = 2; // ±2억
+let customTable = `
+  <h3 style="text-align:center; font-size:1rem; margin-top:1rem;">
+    전세 금액별 연 비용 (기준 금리 ${baseRate}%)
+  </h3>
+  <table style="width:70%; margin:0 auto; font-size:13px; text-align:center; border-collapse:collapse;">
+    <tr>
+      <th style="padding:6px; border:1px solid #ddd;">전세금액 (억)</th>
+      <th style="padding:6px; border:1px solid #ddd;">총 연 비용</th>
+      <th style="padding:6px; border:1px solid #ddd;">월 비용</th>
+    </tr>
+`;
+for (let delta = -rangeEok; delta <= rangeEok + 1e-6; delta += step) {
+  const amt = +(jeonseBase + delta).toFixed(2);
+  if (amt <= 0) continue;
+  const need = amt * 1e8 - totalMoney;
+  const cost = (need > 0
+    ? getLoanInterestBreakdown(need, baseRate/100)
+    : 0
+  ) + CREDIT_LOAN * CREDIT_INTEREST;
+  const isCurrent = amt === jeonseBase;
+  customTable += `
+    <tr style="
+      ${isCurrent 
+        ? 'background:#eef5ff; font-weight:700;' 
+        : ''
+      }
+    ">
+      <td style="padding:6px; border:1px solid #ddd;">${amt.toFixed(2)}</td>
+      <td style="padding:6px; border:1px solid #ddd;">${formatMoney(Math.round(cost))}</td>
+      <td style="padding:6px; border:1px solid #ddd;">${formatMoney(Math.round(cost/12))}</td>
+    </tr>
+  `;
+}
+customTable += `</table>`;
+      document.getElementById("result").innerHTML = customTable + `
+
         <h3>옵션1. 전세 ${(option1Jeonse / 1e8).toFixed(1)}억</h3>
         <table>
           <tr><th>구분</th><th>금액</th><th>계산식</th></tr>
@@ -256,6 +300,7 @@
         </table>
 
         <p class='highlight'>👉 ${cheaper}가 더 유리함 (일년에 ${formatMoney(diff)}, 한달에 ${formatMoney(diff/12)} 차이남)</p>`;
+
 
       if (chartInstance){
         chartInstance.destroy();
