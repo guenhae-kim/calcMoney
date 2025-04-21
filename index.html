@@ -125,7 +125,9 @@
   </div>
 
   <div class="result" id="result"></div>
-  <canvas id="rateChart" width="800" height="800" />
+  
+  <canvas id="rateChart" width="800" height="800"> </canvas>
+  <div class="subresult" id="subresult"> </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
@@ -247,7 +249,8 @@ for (let delta = -rangeEok; delta <= rangeEok + 1e-6; delta += step) {
   `;
 }
 customTable += `</table>`;
-      document.getElementById("result").innerHTML = customTable + `
+  document.getElementById("subresult").innerHTML=customTable;
+      document.getElementById("result").innerHTML = `
 
         <h3>옵션1. 전세 ${(option1Jeonse / 1e8).toFixed(1)}억</h3>
         <table>
