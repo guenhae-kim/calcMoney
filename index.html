@@ -149,7 +149,7 @@
       const opt2 = document.getElementById("option2Deposit").value;
       const rent = document.getElementById("option2Rent").value;
       const rate = document.getElementById("marketRate").value;
-      document.getElementById("summaryText").innerHTML = `전세 ${opt1}억  VS <br> 반전세 ${opt2}억 / ${Number(rent).toLocaleString()}만원 <span class='highlight'>(전세 금리 ${rate}% 적용)</span>`;
+      document.getElementById("summaryText").innerHTML = `<span class='highlight'>(전세 금리 ${rate}% 적용) <br> 전세 ${opt1}억  VS 반전세 ${opt2}억 / ${Number(rent).toLocaleString()}만원 </span>`;
     }
 
     function calculate() {
