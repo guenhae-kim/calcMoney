@@ -209,7 +209,18 @@
         <table>
           <tr><th>구분</th><th>금액</th><th>계산식</th></tr>
           <tr><td>신용대출 이자</td><td>${formatMoney(CREDIT_LOAN * CREDIT_INTEREST)}</td><td>1.5억 × 1%</td></tr>
-          <tr><td>우대금리 전세대출 이자</td><td>${formatMoney(Math.min(option1Jeonse - totalMoney, MAX_PREFERRED_LOAN) * (baseRate - 2) / 100)}</td><td>${formatEok(Math.min(option1Jeonse - totalMoney, MAX_PREFERRED_LOAN))} × ${(baseRate - 2)}%</td></tr>
+          <tr><td>우대금리 전세대출 이자</td>
+  <td>${
+    (option1Jeonse - totalMoney) <= 0
+      ? '0원'
+      : formatMoney(Math.min(option1Jeonse - totalMoney, MAX_PREFERRED_LOAN) * (baseRate - 2) / 100)
+  }</td>
+  <td>${
+    (option1Jeonse - totalMoney) <= 0
+      ? '없음'
+      : `${formatEok(Math.min(option1Jeonse - totalMoney, MAX_PREFERRED_LOAN))} × ${(baseRate - 2)}%`
+  }</td>
+</tr>
           <tr><td>일반금리 전세대출 이자</td><td>${formatMoney(Math.max(option1Jeonse - totalMoney - MAX_PREFERRED_LOAN, 0) * baseRate / 100)}</td><td>${formatEok(Math.max(option1Jeonse - totalMoney - MAX_PREFERRED_LOAN, 0))} × ${baseRate}%</td></tr>
           <tr><td>총 연 이자</td><td>${formatMoney(baseData.interest1)}</td><td>신용 + 전세대출</td></tr>
           <tr><td>월 비용</td><td>${formatMoney(baseData.interest1 / 12)}</td><td>총 이자 ÷ 12</td></tr>
@@ -219,7 +230,18 @@
         <table>
           <tr><th>구분</th><th>금액</th><th>계산식</th></tr>
           <tr><td>신용대출 이자</td><td>${formatMoney(CREDIT_LOAN * CREDIT_INTEREST)}</td><td>1.5억 × 1%</td></tr>
-          <tr><td>우대금리 전세대출 이자</td><td>${formatMoney(Math.min(option2Deposit - totalMoney, MAX_PREFERRED_LOAN) * (baseRate - 2) / 100)}</td><td>${formatEok(Math.min(option2Deposit - totalMoney, MAX_PREFERRED_LOAN))} × ${(baseRate - 2)}%</td></tr>
+          <tr><td>우대금리 전세대출 이자</td>
+  <td>${
+    (option2Deposit - totalMoney) <= 0
+      ? '0원'
+      : formatMoney(Math.min(option2Deposit - totalMoney, MAX_PREFERRED_LOAN) * (baseRate - 2) / 100)
+  }</td>
+  <td>${
+    (option2Deposit - totalMoney) <= 0
+      ? '없음'
+      : `${formatEok(Math.min(option2Deposit - totalMoney, MAX_PREFERRED_LOAN))} × ${(baseRate - 2)}%`
+  }</td>
+</tr>
           <tr><td>일반금리 전세대출 이자</td><td>${formatMoney(Math.max(option2Deposit - totalMoney - MAX_PREFERRED_LOAN, 0) * baseRate / 100)}</td><td>${formatEok(Math.max(option2Deposit - totalMoney - MAX_PREFERRED_LOAN, 0))} × ${baseRate}%</td></tr>
           <tr><td>월세 비용</td><td>${formatMoney(option2Rent * 12)}</td><td>${formatMoney(option2Rent)} × 12</td></tr>
           <tr><td>총 연 비용</td><td>${formatMoney(baseData.interest2)}</td><td>이자 + 월세</td></tr>
